@@ -96,6 +96,27 @@ def cap_reactance(capacitance: float, frequency: float, reactance: float):
         raise ValueError("Exactly one argument must be 0")
 
 
+def resistance(voltage: float, current: float):
+    """
+    Calculate resistance
+
+    Parameters
+    ----------
+    current : float with units in amps
+    volts : float with units in volts
+    resistance : float with units in Ohms
+
+    >>> resistance(1, 0)
+    Traceback (most recent call last):
+        ...
+    ValueError: Current cannot be 0
+    """
+    
+    if current == 0:
+        raise ValueError("Current cannot be 0")
+    else:
+        return {"resistance": abs(voltage/current)}
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
