@@ -94,28 +94,52 @@ def cap_reactance(capacitance: float, frequency: float, reactance: float):
         return {"reactance": 1 / (2*math.pi*frequency*capacitance)}
     else:
         raise ValueError("Exactly one argument must be 0")
+    
 
-
-def resistance(voltage: float, current: float):
+def resonance(capacitance: float, inductance: float, frequency: float):
     """
-    Calculate resistance
+    Calculate capacitance, inductance or resonance frequency.
+
+    Parameters
+    ----------
+    capacitance : float with units in Farads
+    inductance : float with units in Henries
+    frequency : float with units in Hertz
+    """
+        
+    if (capacitance, inductance, frequency).count(0) != 1:
+        raise ValueError("One and only one argument must be 0")
+    elif inductance == 0:
+        return {"inductance": 1 / (pow(2*math.pi*frequency,2)*capacitance)}
+    elif capacitance == 0:
+        return {"capacitance": 1 / (pow(2*math.pi*frequency,2)*inductance)}
+    elif frequency == 0:
+        return {"frequency": math.sqrt(1/(4*pow(math.pi,2)*capacitance*inductance))}
+    else:
+        raise ValueError("Exactly one argument must be 0")
+    
+
+def resistance(voltage: float, current: float, resistance: float):
+    """
+    Calculate resistance, voltage or current by Ohms Law.
 
     Parameters
     ----------
     current : float with units in amps
     volts : float with units in volts
     resistance : float with units in Ohms
-
-    >>> resistance(1, 0)
-    Traceback (most recent call last):
-        ...
-    ValueError: Current cannot be 0
     """
-    
-    if current == 0:
-        raise ValueError("Current cannot be 0")
+    if (voltage, current, resistance).count(0) != 1:
+        raise ValueError("One and only one argument must be 0")  
+    elif voltage == 0:
+        return {"voltage": current*resistance}
+    elif current == 0:
+        return {"current": voltage/resistance}
+    elif resistance == 0:
+        return {"resistance": voltage/current}
     else:
-        return {"resistance": abs(voltage/current)}
+        raise ValueError("Exactly one argument must be 0")
+
 
 if __name__ == "__main__":
     import doctest
