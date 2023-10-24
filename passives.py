@@ -119,7 +119,7 @@ def resonance(capacitance: float, inductance: float, frequency: float):
         raise ValueError("Exactly one argument must be 0")
     
 
-def resistance(voltage: float, current: float, resistance: float):
+def ohms_law(voltage: float, current: float, resistance: float):
     """
     Calculate resistance, voltage or current by Ohms Law.
 
@@ -140,6 +140,44 @@ def resistance(voltage: float, current: float, resistance: float):
     else:
         raise ValueError("Exactly one argument must be 0")
 
+
+def power(voltage: float, current: float, resistance: float):
+    """
+    Calculate power from resistance, voltage or current by Ohms Law.
+
+    Parameters
+    ----------
+    current : float with units in amps
+    volts : float with units in volts
+    resistance : float with units in Ohms
+    
+    Returns
+    ----------
+    power : float in Watts
+    """
+    if (voltage, current, resistance).count(0) != 1:
+        raise ValueError("One and only one argument must be 0")  
+    elif voltage == 0:
+        return {"power": pow(current,2)*resistance}
+    elif current == 0:
+        return {"power": pow(voltage,2)/resistance}
+    elif resistance == 0:
+        return {"power": voltage*current}
+    else:
+        raise ValueError("Exactly one argument must be 0")
+
+
+def impedance(resistance: float, ind_reactance: float, cap_reactance: float):
+    if (resistance, ind_reactance, cap_reactance).count(0) != 1:
+        raise ValueError("One and only one argument must be 0")  
+    elif resistance == 0:   
+        return math.sqrt(pow(ind_reactance + cap_reactance))
+    elif ind_reactance == 0:   
+        return 0
+    elif cap_reactance == 0:
+        return 0
+    else:
+        raise ValueError("Exactly one argument must be 0")
 
 if __name__ == "__main__":
     import doctest
