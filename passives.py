@@ -180,13 +180,19 @@ def impedance(resistance: float, ind_reactance: float, cap_reactance: float):
         raise ValueError("Exactly one argument must be 0")
 
 
-def divider(resistance_h: float, resistance_l, input_voltage: float):
-    if resistance_h == 0 and resistance_l == 0:
-        return ValueError("Resistance values must be non-zero values.")
-    elif input_voltage == 0:
-        return 0
+def divider(res_high: float, res_low, v_in: float, v_out):
+    if (res_high,res_low,v_in,v_out).count(0) != 1:
+        raise ValueError("One and only one argument must be 0")  
+    elif v_in == 0:
+        return v_out*(res_low+res_high)/res_low
+    elif v_out == 0:
+        return res_low/(res_high + res_low)*v_in
+    elif res_high == 0:
+        return ((res_low*v_in)/v_out) - res_low
+    elif res_low == 0:
+        return (res_high*v_out)/(v_in - v_out)
     else:
-        return resistance_l/(resistance_h + resistance_l)*input_voltage
+        raise ValueError("Exactly one argument must be 0")
 
 
 if __name__ == "__main__":
