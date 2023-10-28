@@ -179,6 +179,16 @@ def impedance(resistance: float, ind_reactance: float, cap_reactance: float):
     else:
         raise ValueError("Exactly one argument must be 0")
 
+
+def divider(resistance_h: float, resistance_l, input_voltage: float):
+    if resistance_h == 0 and resistance_l == 0:
+        return ValueError("Resistance values must be non-zero values.")
+    elif input_voltage == 0:
+        return 0
+    else:
+        return resistance_l/(resistance_h + resistance_l)*input_voltage
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
